@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Utsava • Analytics</title>
+  <link rel="stylesheet" href="/css/admin-dashboard.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+
+  <main class="admin-container">
+    <h1>Platform Analytics</h1>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h2>Total Users</h2>
+        <p><%= totalUsers %></p>
+      </div>
+      <div class="stat-card">
+        <h2>Organisers</h2>
+        <p><%= organisers %></p>
+      </div>
+      <div class="stat-card">
+        <h2>Admins</h2>
+        <p><%= admins %></p>
+      </div>
+      <div class="stat-card">
+        <h2>Total Events</h2>
+        <p><%= totalEvents %></p>
+      </div>
+      <div class="stat-card">
+        <h2>Approved Events</h2>
+        <p><%= approvedEvents %></p>
+      </div>
+      <div class="stat-card">
+        <h2>Registrations</h2>
+        <p><%= registrations %></p>
+      </div>
+    </div>
+
+    <div class="analytics-actions">
+      <a href="/admin/dashboard" class="btn light">← Back</a>
+      <a href="/admin/export" class="btn dark">📤 Export Registrations CSV</a>
+    </div>
+  </main>
+
+  <%- include('../partials/footer') %>
+</body>
+</html>

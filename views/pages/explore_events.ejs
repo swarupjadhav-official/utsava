@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explore Events | Utsava</title>
+  <link rel="stylesheet" href="/css/explore_events.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+
+  <main class="explore-container">
+    <!-- HEADER -->
+    <div class="explore-header">
+      <h1>Explore Events</h1>
+      <div class="search-wrapper">
+        <div class="search-bar">
+          <input type="text" id="event-search" placeholder="Search for events..." />
+          <button class="search-btn" type="button">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label><i class="fa fa-tag"></i> Category</label>
+        <select id="filter-category">
+          <option value="all">All</option>
+          <option value="tech">Tech</option>
+          <option value="cultural">Cultural</option>
+          <option value="workshop">Workshop</option>
+          <option value="sports">Sports</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label><i class="fa fa-location-dot"></i> Location</label>
+        <select id="filter-location">
+          <option value="all">All</option>
+          <option value="virtual">Virtual</option>
+          <option value="campus">On Campus</option>
+          <option value="city">City Events</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label><i class="fa fa-calendar"></i> Date Range</label>
+        <select id="filter-date">
+          <option value="all">All Dates</option>
+          <option value="today">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+        </select>
+      </div>
+
+      <button id="clear-filters" class="clear-btn">
+        <i class="fa fa-sliders"></i> Clear Filters
+      </button>
+    </div>
+
+    <!-- EVENT GRID -->
+    <section class="event-grid">
+      <% if (!events || events.length === 0) { %>
+        <p class="empty-text">No events available right now. Check back soon!</p>
+      <% } else { events.forEach(ev => { %>
+        <div class="event-card"
+             data-category="<%= ev.category || 'tech' %>"
+             data-location="<%= ev.location?.toLowerCase() || 'virtual' %>"
+             data-date="<%= ev.startDate || '' %>">
+          <div class="event-image">
+            <img src="<%= ev.image || '/uploads/default-event.jpg' %>" alt="<%= ev.title %>" />
+          </div>
+
+          <div class="event-details">
+            <div class="event-header">
+              <span class="event-type">
+                <%= ev.ticketType === 'paid' ? 'PAID EVENT' : 'FREE EVENT' %>
+              </span>
+              <span class="event-date">
+                <%= ev.startDate
+                  ? new Date(ev.startDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                  : 'Invalid Date' %>
+              </span>
+            </div>
+
+            <h2 class="event-title"><%= ev.title %></h2>
+            <p class="event-desc">
+              <%= ev.description && ev.description.length > 100
+                ? ev.description.slice(0, 100) + '...'
+                : ev.description || 'No description available.' %>
+            </p>
+
+            <p class="event-location">📍 <%= ev.location %></p>
+
+            <div class="event-footer">
+              <% if (ev.capacity && ev.capacity <= 0) { %>
+                <span class="event-tag sold">Sold Out</span>
+              <% } else if (ev.ticketType === 'paid') { %>
+                <span class="event-tag paid">Paid</span>
+              <% } else { %>
+                <span class="event-tag free">Free</span>
+              <% } %>
+
+              <!-- 🔵 changed text here -->
+              <a href="/events/event/<%= ev.slug %>" class="event-btn">Join Event</a>
+            </div>
+          </div>
+        </div>
+      <% }) } %>
+    </section>
+  </main>
+
+  <%- include('../partials/footer') %>
+
+  <script>
+    // FILTER LOGIC
+    const filters = {
+      category: document.getElementById("filter-category"),
+      location: document.getElementById("filter-location"),
+      date: document.getElementById("filter-date"),
+      clear: document.getElementById("clear-filters"),
+    };
+
+    function applyFilters() {
+      const category = filters.category.value;
+      const location = filters.location.value;
+      const date = filters.date.value;
+
+      const today = new Date();
+      const cards = document.querySelectorAll(".event-card");
+
+      cards.forEach(card => {
+        const matchCategory = category === "all" || card.dataset.category === category;
+        const matchLocation = location === "all" || card.dataset.location.includes(location);
+
+        let matchDate = true;
+        const eventDate = new Date(card.dataset.date);
+        if (date === "today") {
+          matchDate = eventDate.toDateString() === today.toDateString();
+        } else if (date === "week") {
+          const nextWeek = new Date(today);
+          nextWeek.setDate(today.getDate() + 7);
+          matchDate = eventDate >= today && eventDate <= nextWeek;
+        } else if (date === "month") {
+          matchDate = eventDate.getMonth() === today.getMonth();
+        }
+
+        card.style.display = matchCategory && matchLocation && matchDate ? "flex" : "none";
+      });
+    }
+
+    Object.values(filters).forEach(el => {
+      if (el.tagName === "SELECT") el.addEventListener("change", applyFilters);
+    });
+
+    filters.clear.addEventListener("click", () => {
+      Object.values(filters).forEach(el => {
+        if (el.tagName === "SELECT") el.value = "all";
+      });
+      document.querySelectorAll(".event-card").forEach(card => (card.style.display = "flex"));
+    });
+  </script>
+</body>
+</html>

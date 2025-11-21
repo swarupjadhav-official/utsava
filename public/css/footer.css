@@ -1,0 +1,126 @@
+/* ---------- FOOTER BASE ---------- */
+.utsava-footer {
+  background: #f9fafb;
+  border-top: none;
+  padding: 2rem 2rem;
+  font-family: 'Poppins', sans-serif;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+/* ---------- LAYOUT ---------- */
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ---------- LINKS ---------- */
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 400;
+}
+
+.footer-links a:hover {
+  color: #4b5563;
+}
+
+/* ---------- RIGHT SIDE ---------- */
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ✅ MICRO CLONE Gradient Text (Apple “Chat” inspired) */
+.gradient-host-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: linear-gradient(
+    90deg,
+    #000000 0%,     /* pure black */
+    #1c1b1f 25%,     /* graphite dark gray */
+    #4b2b5f 55%,     /* muted plum */
+    #8e44ad 75%,     /* violet */
+    #c084fc 100%     /* soft pastel fade */
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.3px;
+  filter: drop-shadow(0 0.5px 1px rgba(0, 0, 0, 0.08));
+  transition: all 0.3s ease;
+}
+
+.gradient-host-text span {
+  font-weight: 700;
+}
+
+.gradient-host-text:hover {
+  filter: brightness(1.2);
+  transform: translateY(-1px);
+}
+
+.gradient-host-text span {
+  font-weight: 700;
+}
+
+.gradient-host-text:hover {
+  filter: brightness(1.18);
+  transform: translateY(-1px);
+}
+
+.gradient-host-text:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.gradient-host-text span {
+  font-weight: 700;
+}
+
+/* ---------- ICONS ---------- */
+.footer-icons {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.1rem;
+}
+
+.footer-icons a {
+  color: #9ca3af;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-icons a:hover {
+  color: #111827;
+  transform: scale(1.05);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .footer-right {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

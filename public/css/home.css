@@ -1,0 +1,338 @@
+/* ---------- GLOBAL ---------- */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  color: #111827;
+  overflow-x: hidden;
+  position: relative;
+  /* closer to the soft mac Safari look: big faded center, more white at edges */
+  background:
+    radial-gradient(circle at 20% 0%, rgba(253, 242, 255, 1) 0%, rgba(253, 242, 255, 0.2) 40%, transparent 70%),
+    radial-gradient(circle at 80% 0%, rgba(224, 242, 255, 1) 0%, rgba(224, 242, 255, 0.2) 45%, transparent 75%),
+    radial-gradient(circle at 50% 55%, rgba(255, 240, 245, 1) 0%, rgba(255, 240, 245, 0.2) 50%, #fdfcff 100%);
+  /* navbar top spacing is handled in navbar.css */
+}
+
+/* ---------- FLOATING BLOBS ---------- */
+.floating-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.6;
+  z-index: -1;
+  animation: moveBlob 25s ease-in-out infinite;
+  transition: transform 0.3s;
+}
+
+.blob-orange {
+  background: rgba(255, 154, 0, 0.3);
+  width: 400px;
+  height: 400px;
+  top: 100px;
+  left: 10%;
+}
+
+.blob-cyan {
+  background: rgba(0, 255, 224, 0.25);
+  width: 500px;
+  height: 500px;
+  top: 160px;
+  left: 65%;
+  animation-delay: 5s;
+}
+
+.blob-pink {
+  background: rgba(255, 106, 255, 0.25);
+  width: 350px;
+  height: 350px;
+  top: 130px;
+  left: 40%;
+  animation-delay: 2s;
+}
+
+@keyframes moveBlob {
+
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  25% {
+    transform: translate(40px, -30px) rotate(90deg);
+  }
+
+  50% {
+    transform: translate(-40px, 30px) rotate(180deg);
+  }
+
+  75% {
+    transform: translate(30px, -40px) rotate(270deg);
+  }
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+/* Nano-clone multicolor gradient for "Utsava" */
+.utsava-gradient {
+  font-size: 4.5rem;
+  /* match your hero size */
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  display: inline-block;
+  color: transparent;
+  /* text will come from background */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Gradient stops tuned to the 'Learn' look */
+  background-image: linear-gradient(90deg,
+      #1f1a21 0%,
+      #6f3b9a 18%,
+      #c64a58 36%,
+      #f2b46b 56%,
+      #d6e6ff 76%,
+      #5b9aff 100%);
+
+  /* subtle depth & crispness like the sample */
+  text-shadow:
+    0 0 0 rgba(0, 0, 0, 0),
+    /* keep layout */
+    0 6px 18px rgba(0, 0, 0, 0.04);
+  /* soft depth from background */
+
+  /* optional: slightly tighter rendering on large screens */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Small responsive tweak */
+@media (max-width: 768px) {
+  .utsava-gradient {
+    font-size: 2.8rem;
+  }
+}
+
+.hero p {
+  max-width: 650px;
+  margin: 0 auto 2rem;
+  font-size: 1.2rem;
+  color: #4b5563;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ---------- BUTTONS ---------- */
+.btn {
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn.primary {
+  background: #7c3aed;
+  color: white;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+
+.btn.primary:hover {
+  background: #6d28d9;
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
+}
+
+.btn.secondary {
+  background: #e5e7eb;
+  color: #111;
+}
+
+.btn.secondary:hover {
+  background: #d1d5db;
+  transform: scale(1.05);
+}
+
+/* ---------- ABOUT ---------- */
+.about {
+  text-align: center;
+  padding: 5rem 1rem;
+}
+
+.about-logo {
+  max-width: 150px;
+  margin-bottom: 1.5rem;
+}
+
+.about h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.about p {
+  font-size: 1.1rem;
+  color: #4b5563;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* ---------- WHY ---------- */
+.why {
+  padding: 5rem 1rem;
+}
+
+.why h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.why-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- HOW IT WORKS ---------- */
+.how-it-works {
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.how-it-works h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.video-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.video-container video {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- CTA ---------- */
+.cta {
+  padding: 6rem 1rem;
+  background: linear-gradient(to right, #ede9fe, #fce7f3);
+  text-align: center;
+}
+
+.cta h2 {
+  font-size: 2.8rem;
+  margin-bottom: 2rem;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ---------- ANIMATIONS ---------- */
+.animate-fade {
+  opacity: 0;
+  animation: fadeInUp 1s forwards;
+}
+
+.animate-fade.delay-1 {
+  animation-delay: 0.3s;
+}
+
+.animate-fade.delay-2 {
+  animation-delay: 0.6s;
+}
+
+.animate-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: cardFadeIn 0.8s forwards;
+}
+
+.animate-card.delay-1 {
+  animation-delay: 0.2s;
+}
+
+.animate-card.delay-2 {
+  animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  body {
+    padding-top: 70px;
+  }
+
+  .hero h1 {
+    font-size: 2.8rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .why h2,
+  .how-it-works h2,
+  .cta h2 {
+    font-size: 2rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

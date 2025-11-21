@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= event.title %> | Utsava</title>
+  <link rel="stylesheet" href="/css/event_detail.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+  <%- include('../partials/navbar') %>
+
+  <main class="event-wrapper">
+    <!-- HEADER GRID -->
+    <section class="event-header">
+      <!-- LEFT SIDE -->
+      <div class="event-left">
+        <img src="<%= event.image || '/uploads/default-event.jpg' %>" alt="<%= event.title %>" class="event-banner" />
+
+        <!-- ✅ Hosted By (Dynamic) -->
+        <div class="hosted-box">
+          <h3>Hosted By</h3>
+          <div class="host-info">
+            <img src="/uploads/utsava-logo.png" alt="Host Logo" />
+            <div>
+              <h4><%= event.hostedBy || "Utsava Events" %></h4>
+              <p>Empowering Organisers • Connecting Attendees</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="event-right">
+        <!-- Title + Details -->
+        <h1 class="event-title"><%= event.title %></h1>
+
+        <div class="event-meta">
+          <div class="meta-item">
+            <i class="fa-regular fa-calendar"></i>
+            <div>
+              <strong>
+                <%= new Date(event.startDate).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }) %>
+              </strong><br>
+              <span>
+                <%= new Date(event.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> –
+                <%= event.endDate ? new Date(event.endDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'End time TBD' %>
+              </span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <i class="fa-solid fa-location-dot"></i>
+            <div>
+              <strong><%= event.location %></strong><br>
+              <span>India</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Registration Box -->
+        <div class="register-box">
+          <% if (registered) { %>
+            <p class="registered-msg">✅ You’re already registered for this event.</p>
+          <% } else if (capacityLeft === 0) { %>
+            <p class="full-msg">🚫 Registration full.</p>
+          <% } else { %>
+            <h3>Registration</h3>
+            <p>Welcome! To join the event, please register below.</p>
+            <form action="/events/<%= event._id %>/register" method="POST" class="register-form">
+              <% if (!user) { %>
+                <input type="text" name="name" placeholder="Your Name" required />
+                <input type="email" name="email" placeholder="Your Email" required />
+              <% } else { %>
+                <div class="user-display">
+                  <i class="fa-regular fa-user"></i>
+                  <span><%= user.name %> (<%= user.email %>)</span>
+                </div>
+              <% } %>
+              <button type="submit" class="btn register-btn">Register</button>
+            </form>
+          <% } %>
+        </div>
+
+        <!-- About Event -->
+        <div class="about-section">
+          <h3>About Event</h3>
+         <p class="event-description-text"><%= event.description %></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <%- include('../partials/footer') %>
+</body>
+</html>

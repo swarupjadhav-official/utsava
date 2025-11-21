@@ -1,0 +1,40 @@
+<header class="navbar">
+  <div class="nav-container">
+    <!-- Logo -->
+    <a href="/" class="nav-logo">
+      <img src="/uploads/utsava-logo.png" alt="Utsava Logo" class="logo-image" />
+    </a>
+
+    <!-- Center Nav Links -->
+    <nav class="nav-links">
+      <a href="/events" class="nav-link">Join Events</a>
+      <a href="/about" class="nav-link">About</a>
+      <a href="/how-it-works" class="nav-link">How it Works?</a>
+    </nav>
+
+    <!-- Right Side Buttons -->
+<div class="nav-buttons">
+  <% if (!user) { %>
+    <a href="/login" class="btn login-btn">Login</a>
+    <a href="/signup" class="btn create-btn">Sign Up</a>
+  <% } else if (user.role === "admin") { %>
+  <a href="/admin/dashboard" class="btn create-btn">Admin Panel</a>
+  <a href="/admin/analytics" class="btn create-btn">Analytics</a>
+  <a href="/auth/logout" class="btn login-btn">Logout</a>
+  <% } else { %>
+    <span class="welcome-text">Hi, <%= user.name %></span>
+    <a href="/events/dashboard" class="btn create-btn">Dashboard</a>
+    <a href="/auth/logout" class="btn login-btn">Logout</a>
+  <% } %>
+</div>
+
+    </div>
+
+    <!-- Mobile Toggle -->
+    <div class="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</header>

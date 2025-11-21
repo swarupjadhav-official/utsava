@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | Utsava</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <%- include('../partials/navbar') %>
+
+    <main class="admin-container">
+      <h1 class="page-title">Admin Dashboard</h1>
+      <p class="subtitle">Manage organisers and events across Utsava</p>
+
+      <!-- 🔹 Pending Events Section -->
+      <section class="admin-section">
+        <h2>Pending Events (Approval Needed)</h2>
+        <% if (!pendingEvents || pendingEvents.length === 0) { %>
+          <p class="empty-msg">✅ No pending events for now!</p>
+        <% } else { %>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Organiser</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% pendingEvents.forEach(e => { %>
+                <tr>
+                  <td><%= e.title %></td>
+                  <td><%= e.organiserId?.name || "Unknown" %></td>
+                  <td><%= new Date(e.date).toLocaleDateString() %></td>
+                  <td>
+                    <form action="/admin/events/<%= e._id %>/approve" method="POST" class="inline-form">
+                      <button type="submit" class="btn approve">Approve</button>
+                    </form>
+                    <form action="/admin/events/<%= e._id %>/reject" method="POST" class="inline-form" onsubmit="return confirm('Reject this event?')">
+                      <button type="submit" class="btn reject">Reject</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </section>
+
+      <!-- 🔹 Approved Events Section -->
+      <section class="admin-section">
+        <h2>Approved Events</h2>
+        <% if (!approvedEvents || approvedEvents.length === 0) { %>
+          <p class="empty-msg">No approved events yet.</p>
+        <% } else { %>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Organiser</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% approvedEvents.forEach(e => { %>
+                <tr>
+                  <td><%= e.title %></td>
+                  <td><%= e.organiserId?.name || "Unknown" %></td>
+                  <td><%= new Date(e.date).toLocaleDateString() %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </section>
+
+      <!-- 🔹 Organiser Management -->
+      <section class="admin-section">
+        <h2>Organisers</h2>
+        <% if (!organisers || organisers.length === 0) { %>
+          <p class="empty-msg">No organisers found.</p>
+        <% } else { %>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% organisers.forEach(o => { %>
+                <tr>
+                  <td><%= o.name %></td>
+                  <td><%= o.email %></td>
+                  <td>
+                    <form action="/admin/users/<%= o._id %>/remove" method="POST" class="inline-form"
+                      onsubmit="return confirm('Remove organiser role?')">
+                      <button type="submit" class="btn reject">Remove</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </section>
+
+      <!-- 🔹 Quick Links -->
+      <div class="quick-links">
+        <a href="/admin/analytics" class="btn primary">📊 View Analytics</a>
+        <a href="/" class="btn light">🏠 Back to Home</a>
+      </div>
+    </main>
+
+    <%- include('../partials/footer') %>
+  </body>
+</html>

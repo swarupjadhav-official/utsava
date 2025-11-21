@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Utsava | Campus Event Platform</title>
+  <link rel="stylesheet" href="/css/home.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <%- include('../partials/navbar') %>
+
+    <!-- Floating Blobs -->
+    <div class="floating-blob blob-orange"></div>
+    <div class="floating-blob blob-cyan"></div>
+    <div class="floating-blob blob-pink"></div>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-content">
+<h1 class="hero-title utsava-gradient">Utsava</h1>
+        <p class="animate-fade delay-1">
+          Campus-first event management + digital ticketing — organisers create, attendees register (no login),
+          admin supervises, and tickets come with QR check-in.
+        </p>
+        <div class="hero-buttons animate-fade delay-2">
+          <a href="/events/dashboard" class="btn primary">Become a Host</a>
+          <a href="/events" class="btn secondary">Explore Events</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT UTSAVA -->
+    <section class="about">
+      <img src="/uploads/utsava-logo.png" alt="Utsava Logo" class="about-logo" />
+      <h2>About Utsava</h2>
+      <p>
+        Utsava is a campus-first event platform that simplifies organising, attending, and managing events.
+        Organisers create, attendees register easily, and admins monitor analytics—all in one seamless platform.
+      </p>
+    </section>
+
+    <!-- WHY UTSAVA -->
+    <section class="why">
+      <h2>Why Utsava?</h2>
+      <div class="why-cards">
+        <div class="card animate-card">
+          <h3>Organisers</h3>
+          <p>Create events with title, images, venue, capacity & ticket types. Google login for university emails and
+            co-organiser roles.</p>
+        </div>
+        <div class="card animate-card delay-1">
+          <h3>Attendees</h3>
+          <p>Browse events without logging in. Register with name & email. Receive a QR ticket + .ics calendar invite by
+            email.</p>
+        </div>
+        <div class="card animate-card delay-2">
+          <h3>Admins</h3>
+          <p>Approve organisers/events, monitor analytics, export CSV reports, and keep campus safe.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works">
+      <h2>How It Works</h2>
+      <div class="video-container">
+        <video controls>
+          <source src="/videos/utsava-demo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <h2>Ready to build better campus events?</h2>
+      <div class="cta-buttons">
+        <a href="/events/dashboard" class="btn primary">Create Your Event</a>
+        <a href="/events" class="btn secondary">Explore Events</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <%- include('../partials/footer') %>
+
+      <!-- Optional JS for mobile navbar toggle -->
+      <script>
+        const toggleBtn = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        toggleBtn?.addEventListener('click', () => {
+          navLinks.classList.toggle('active');
+        });
+      </script>
+</body>
+
+</html>

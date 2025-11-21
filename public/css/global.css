@@ -1,0 +1,39 @@
+/* public/css/global.css */
+:root {
+  --primary: #7c3aed;
+  --secondary: #f472b6;
+  --dark: #111827;
+  --light-bg: #f9fafb;
+  --radius: 12px;
+  --transition: 0.3s ease;
+}
+
+body {
+  margin: 0;
+  padding-top: 100px; /* Avoid navbar overlap */
+  font-family: 'Poppins', sans-serif;
+  color: var(--dark);
+  background: linear-gradient(to bottom right, #f5f3ff, #eff6ff);
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+}
+
+.btn {
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: var(--radius);
+}
+
+.btn.primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(124, 58, 237, 0.25);
+}

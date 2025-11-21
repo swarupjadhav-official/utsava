@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Event | Utsava</title>
+  <link rel="stylesheet" href="/css/create-event.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+</head>
+
+<body>
+  <div class="create-container">
+    <form id="editForm" class="event-form" action="/events/edit/<%= event._id %>" method="POST"
+      enctype="multipart/form-data">
+      <h2>Edit Event</h2>
+
+      <!-- ✅ Image Upload Section -->
+      <div class="image-upload">
+        <div class="upload-placeholder" id="image-box">
+          <i class="fa-solid fa-upload"></i>
+          <p>Replace event image</p>
+          <input type="file" id="event-image" name="image" accept="image/*" style="margin-top: 10px;" />
+        </div>
+
+        <!-- ✅ Show current image -->
+        <% if (event.image) { %>
+          <img id="preview-img" src="<%= event.image %>" alt="Event Image" style="display: block;" />
+        <% } else { %>
+          <img id="preview-img" alt="Preview" style="display: none;" />
+        <% } %>
+      </div>
+
+      <!-- Event Title -->
+      <div class="form-group">
+        <label>Event Title</label>
+        <input type="text" name="title" value="<%= event.title %>" placeholder="Enter event name" required />
+      </div>
+
+      <!-- 🆕 Hosted By -->
+      <div class="form-group">
+        <label>Hosted By</label>
+        <input type="text" name="hostedBy" value="<%= event.hostedBy || '' %>" placeholder="Organizer / Team / Person name" required />
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label>Start Date & Time</label>
+          <input type="datetime-local" name="startDate"
+            value="<%= event.startDate ? event.startDate.toISOString().slice(0,16) : '' %>" required />
+        </div>
+        <div>
+          <label>End Date & Time</label>
+          <input type="datetime-local" name="endDate"
+            value="<%= event.endDate ? event.endDate.toISOString().slice(0,16) : '' %>" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Event Location</label>
+        <input type="text" name="location" value="<%= event.location %>" placeholder="Offline address or virtual link"
+          required />
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea name="description" rows="4" placeholder="Add event details..."
+          required><%= event.description %></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="ticket-section">
+          <label>Tickets</label>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="ticketType" value="free" <%= event.ticketType==='free' ? 'checked' : '' %> />
+              Free
+            </label>
+            <label>
+              <input type="radio" name="ticketType" value="paid" <%= event.ticketType==='paid' ? 'checked' : '' %> />
+              Paid
+            </label>
+          </div>
+          <input type="number" id="ticket-price" name="price" placeholder="Enter price (₹)"
+            value="<%= event.price || '' %>" style="display:none;" />
+        </div>
+
+        <div>
+          <label>Capacity</label>
+          <input type="number" name="capacity" value="<%= event.capacity %>" placeholder="Unlimited" />
+        </div>
+      </div>
+
+      <button type="submit" class="create-btn">💾 Update Event</button>
+      <a href="/events/dashboard" class="btn-secondary">← Back to Dashboard</a>
+    </form>
+  </div>
+
+  <script>
+    const uploadInput = document.getElementById("event-image");
+    const previewImg = document.getElementById("preview-img");
+    const ticketPrice = document.getElementById("ticket-price");
+    const freeRadio = document.querySelector('input[value="free"]');
+    const paidRadio = document.querySelector('input[value="paid"]');
+
+    // ✅ Image Preview Logic
+    uploadInput?.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) {
+        previewImg.style.display = "none";
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImg.src = e.target.result;
+        previewImg.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // ✅ Ticket toggle logic
+    function togglePrice() {
+      ticketPrice.style.display = paidRadio.checked ? "block" : "none";
+    }
+    freeRadio?.addEventListener("change", togglePrice);
+    paidRadio?.addEventListener("change", togglePrice);
+    togglePrice();
+  </script>
+</body>
+
+</html>

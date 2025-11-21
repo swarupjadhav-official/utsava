@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Utsava • Dashboard</title>
+  <link rel="stylesheet" href="/css/dashboard.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+
+  <main class="dash">
+    <div class="dash-inner">
+      <div class="dash-head">
+        <h1>Events</h1>
+        <div class="tab-wrap" role="tablist" aria-label="Event tabs">
+          <button class="tab-btn active" data-tab="upcoming">Upcoming</button>
+          <button class="tab-btn" data-tab="past">Past</button>
+        </div>
+
+        <!-- ✅ Always visible Create button -->
+        <a href="/events/create" class="btn create-btn-top">+ Create New Event</a>
+      </div>
+
+      <!-- UPCOMING -->
+      <section id="upcoming" class="events-section active-section">
+        <% if (!eventsUpcoming || eventsUpcoming.length === 0) { %>
+          <div class="empty-state">
+            <div class="empty-illustration" aria-hidden="true">
+              <div class="empty-card"><span class="badge">0</span></div>
+            </div>
+            <h2>No Upcoming Events</h2>
+            <p>You have no upcoming events. Why not host one?</p>
+          </div>
+        <% } else { %>
+          <div class="timeline">
+            <% eventsUpcoming.forEach(ev => { 
+                 const evDate = new Date(ev.date || Date.now());
+                 const dateLabel = evDate.toLocaleString(undefined, { day: 'numeric', month: 'short' });
+                 const weekday = evDate.toLocaleString(undefined, { weekday: 'long' });
+                 const thumbUrl = ev.image ? ev.image : '/uploads/default-event.jpg';
+            %>
+              <div class="timeline-row">
+                <div class="timeline-left">
+                  <div class="date-block">
+                    <div class="date-day"><%= dateLabel.split(' ')[0] %></div>
+                    <div class="date-month"><%= dateLabel.split(' ')[1] %></div>
+                    <div class="date-week"><%= weekday %></div>
+                  </div>
+                </div>
+
+                <div class="timeline-line"></div>
+
+                <div class="timeline-card">
+                  <div class="card-top">
+                    <div class="time"><%= ev.time || '' %></div>
+                    <div class="thumb" data-bg="<%= thumbUrl %>"></div>
+                  </div>
+
+                  <div class="card-body">
+                    <h3 class="title"><%= ev.title %></h3>
+                    <div class="meta">
+                      <span class="organiser">By <strong><%= ev.organiserName || 'You' %></strong></span>
+                      <span class="venue">• <%= ev.location || 'TBA' %></span>
+                    </div>
+
+                    <div class="tags-row">
+                      <% if (ev.tags && ev.tags.length) { %>
+                        <% ev.tags.slice(0,3).forEach(t => { %>
+                          <span class="tag">#<%= t %></span>
+                        <% }); %>
+                      <% } else { %>
+                        <span class="no-guests">No tags</span>
+                      <% } %>
+                    </div>
+
+                    <div class="card-actions">
+                      <!-- ✅ Correct routes -->
+                      <a href="/events/edit/<%= ev._id %>" class="btn dark">Manage</a>
+
+                      <!-- 🧩 Delete with confirmation -->
+                      <form 
+                        action="/events/delete/<%= ev._id %>" 
+                        method="POST" 
+                        class="delete-form" 
+                        onsubmit="return confirmDelete(event)"
+                      >
+                        <button type="submit" class="btn danger">Delete</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </section>
+
+      <!-- PAST -->
+      <section id="past" class="events-section">
+        <% if (!eventsPast || eventsPast.length === 0) { %>
+          <div class="empty-state small">
+            <h2>No Past Events</h2>
+            <p>Past events you hosted or attended will appear here.</p>
+          </div>
+        <% } else { %>
+          <div class="list-cards">
+            <% eventsPast.forEach(ev => { 
+                 const pbThumb = ev.image ? ev.image : '/uploads/default-event.jpg';
+            %>
+              <div class="past-card">
+                <div class="past-left">
+                  <div class="past-date">
+                    <div class="pd-day"><%= new Date(ev.date).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }) %></div>
+                    <div class="pd-week"><%= new Date(ev.date).toLocaleDateString(undefined, { weekday: 'short' }) %></div>
+                  </div>
+                </div>
+                <div class="past-body">
+                  <div class="pb-top">
+                    <h3><%= ev.title %></h3>
+                    <div class="pb-thumb" data-bg="<%= pbThumb %>"></div>
+                  </div>
+                  <div class="pb-meta">
+                    <span><i class="icon">📍</i> <%= ev.location || 'Online' %></span>
+                  </div>
+                  <div class="pb-actions">
+                    <a href="/events/event/<%= ev.slug %>" class="btn light">View</a>
+
+                    <!-- 🧩 Delete old events too -->
+                    <form 
+                      action="/events/delete/<%= ev._id %>" 
+                      method="POST" 
+                      class="delete-form" 
+                      onsubmit="return confirmDelete(event)"
+                    >
+                      <button type="submit" class="btn danger">Delete</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </section>
+    </div>
+  </main>
+
+  <%- include('../partials/footer') %>
+
+  <script>
+    // Tabs toggle
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tab = btn.dataset.tab;
+        document.querySelectorAll('.events-section').forEach(s => s.classList.remove('active-section'));
+        document.getElementById(tab).classList.add('active-section');
+      });
+    });
+
+    // Apply background images
+    document.querySelectorAll('[data-bg]').forEach(el => {
+      const url = el.getAttribute('data-bg') || '';
+      if (url) el.style.backgroundImage = `url("${url}")`;
+    });
+
+    // ✅ Delete confirmation
+    function confirmDelete(e) {
+      const confirmed = confirm("⚠️ Are you sure you want to delete this event? This will also remove all its registrations permanently.");
+      if (!confirmed) {
+        e.preventDefault();
+        return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>

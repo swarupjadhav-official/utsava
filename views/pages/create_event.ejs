@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Event | Utsava</title>
+    <link rel="stylesheet" href="/css/create-event.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="create-container">
+      <form
+        id="eventForm"
+        class="event-form"
+        action="/events/create"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <h2>Create New Event</h2>
+
+        <!-- ✅ Image Upload Section -->
+        <div class="image-upload">
+          <div class="upload-placeholder">
+            <i class="fa-solid fa-upload"></i>
+            <p>Upload event image</p>
+            <input
+              type="file"
+              id="event-image"
+              name="image"
+              accept="image/*"
+              required
+              style="margin-top: 10px"
+            />
+          </div>
+          <img id="preview-img" alt="Preview" style="display: none" />
+        </div>
+
+        <!-- Event Title -->
+        <div class="form-group">
+          <label>Event Title</label>
+          <input
+            type="text"
+            name="title"
+            placeholder="Enter event name"
+            required
+          />
+        </div>
+
+        <!-- 🆕 Hosted By -->
+        <div class="form-group">
+          <label>Hosted By</label>
+          <input
+            type="text"
+            name="hostedBy"
+            placeholder="Organizer / Team / Person name"
+            required
+          />
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label>Start Date & Time</label>
+            <input type="datetime-local" name="startDate" required />
+          </div>
+          <div>
+            <label>End Date & Time</label>
+            <input type="datetime-local" name="endDate" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Event Location</label>
+          <input
+            type="text"
+            name="location"
+            placeholder="Offline address or virtual link"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea
+            name="description"
+            rows="4"
+            placeholder="Add event details..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="ticket-section">
+            <label>Tickets</label>
+            <div class="radio-group">
+              <label>
+                <input
+                  type="radio"
+                  name="ticketType"
+                  value="free"
+                  checked
+                />
+                Free
+              </label>
+              <label>
+                <input type="radio" name="ticketType" value="paid" />
+                Paid
+              </label>
+            </div>
+            <input
+              type="number"
+              id="ticket-price"
+              name="price"
+              placeholder="Enter price (₹)"
+              style="display: none"
+            />
+          </div>
+
+          <div>
+            <label>Capacity</label>
+            <input type="number" name="capacity" placeholder="Unlimited" />
+          </div>
+        </div>
+
+        <button type="submit" class="create-btn">Create Event</button>
+      </form>
+    </div>
+
+    <script>
+      const uploadInput = document.getElementById("event-image");
+      const previewImg = document.getElementById("preview-img");
+      const ticketPrice = document.getElementById("ticket-price");
+      const freeRadio = document.querySelector('input[value="free"]');
+      const paidRadio = document.querySelector('input[value="paid"]');
+
+      // ✅ Preview Logic (Safari + Chrome supported)
+      uploadInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+          previewImg.style.display = "none";
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewImg.src = e.target.result;
+          previewImg.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // ✅ Ticket Type Toggle
+      function togglePrice() {
+        ticketPrice.style.display = paidRadio.checked ? "block" : "none";
+      }
+      freeRadio.addEventListener("change", togglePrice);
+      paidRadio.addEventListener("change", togglePrice);
+      togglePrice();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background: linear-gradient(to bottom right, #f5f3ff, #eff6ff);
+  color: #111827;
+}
+
+.admin-container {
+  padding: 2rem 5%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.admin-section {
+  background: #fff;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.admin-section h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.admin-table th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+.inline-form {
+  display: inline;
+}
+
+.btn {
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.btn.approve {
+  background: #22c55e;
+  color: white;
+}
+
+.btn.reject {
+  background: #ef4444;
+  color: white;
+}
+
+.btn.primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn.light {
+  background: #e5e7eb;
+  color: #111;
+}
+
+.quick-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.empty-msg {
+  color: #777;
+  font-style: italic;
+}
