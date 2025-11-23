@@ -23,7 +23,7 @@
     <!-- HERO SECTION -->
     <section class="hero">
       <div class="hero-content">
-<h1 class="hero-title utsava-gradient">Utsava</h1>
+        <h1 class="hero-title utsava-gradient">Utsava</h1>
         <p class="animate-fade delay-1">
           Campus-first event management + digital ticketing — organisers create, attendees register (no login),
           admin supervises, and tickets come with QR check-in.
@@ -37,7 +37,7 @@
 
     <!-- ABOUT UTSAVA -->
     <section class="about">
-      <img src="https://res.cloudinary.com/dhl5wzz6q/image/upload/v1763920233/utsava-logo_ew4wwt.png" alt="Utsava Logo" class="about-logo" />
+      <img src="<%= UTSAVA_LOGO_URL %>" alt="Host Logo" />class="about-logo" />
       <h2>About Utsava</h2>
       <p>
         Utsava is a campus-first event platform that simplifies organising, attending, and managing events.
@@ -70,8 +70,10 @@
     <section class="how-it-works">
       <h2>How It Works</h2>
       <div class="video-container">
-        <video controls>
-          <source src="/videos/utsava-demo.mp4" type="video/mp4" />
+        <video controls autoplay muted playsinline>
+          <source
+            src="https://res.cloudinary.com/dhl5wzz6q/video/upload/v1763929777/Gradient_Startup_Conference_Video_dz3zy1.mp4"
+            type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
