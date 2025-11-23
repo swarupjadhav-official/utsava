@@ -10,20 +10,18 @@ import registrationRoutes from "./src/routes/registrationRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js"; // ✅ Added admin routes
 import User from "./src/models/User.js"; // ✅ for global middleware
 
-// Load environment variables
 dotenv.config();
 
-// Connect to MongoDB
-connectDB();
-
-// ✅ CREATE APP FIRST
-const app = express();
-
-/// ✅ Global logo URL (Cloudinary)
-app.locals.UTSAVA_LOGO_URL =
+// ✅ Define logo URL (env first, fallback to Cloudinary URL)
+const UTSAVA_LOGO_URL =
   process.env.UTSAVA_LOGO_URL ||
   "https://res.cloudinary.com/dhl5wzz6q/image/upload/v1763920233/utsava-logo_ew4wwt.png";
 
+connectDB();
+
+const app = express();
+
+// ✅ Make available in ALL EJS views
 app.locals.UTSAVA_LOGO_URL = UTSAVA_LOGO_URL;
 
 // ---------- Path Setup ----------
