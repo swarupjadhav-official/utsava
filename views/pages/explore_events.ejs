@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Explore Events | Utsava</title>
+
+  <!-- Styles -->
   <link rel="stylesheet" href="/css/explore_events.css" />
   <link rel="stylesheet" href="/css/navbar.css" />
   <link rel="stylesheet" href="/css/footer.css" />
@@ -69,12 +71,16 @@
     <section class="event-grid">
       <% if (!events || events.length === 0) { %>
         <p class="empty-text">No events available right now. Check back soon!</p>
-      <% } else { events.forEach(ev => { %>
+      <% } else { events.forEach(ev => { 
+           const start = ev.startDate || ev.date;
+      %>
         <div class="event-card"
              data-category="<%= ev.category || 'tech' %>"
-             data-location="<%= ev.location?.toLowerCase() || 'virtual' %>"
-             data-date="<%= ev.startDate || '' %>">
+             data-location="<%= (ev.location || 'virtual').toLowerCase() %>"
+             data-date="<%= start || '' %>">
+
           <div class="event-image">
+            <!-- Cloudinary URL is already in ev.image, fallback to default thumbnail -->
             <img src="<%= ev.image || '/uploads/default-event.jpg' %>" alt="<%= ev.title %>" />
           </div>
 
@@ -84,13 +90,14 @@
                 <%= ev.ticketType === 'paid' ? 'PAID EVENT' : 'FREE EVENT' %>
               </span>
               <span class="event-date">
-                <%= ev.startDate
-                  ? new Date(ev.startDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                <%= start
+                  ? new Date(start).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
                   : 'Invalid Date' %>
               </span>
             </div>
 
             <h2 class="event-title"><%= ev.title %></h2>
+
             <p class="event-desc">
               <%= ev.description && ev.description.length > 100
                 ? ev.description.slice(0, 100) + '...'
@@ -108,7 +115,7 @@
                 <span class="event-tag free">Free</span>
               <% } %>
 
-              <!-- 🔵 changed text here -->
+              <!-- Join Event button links by slug -->
               <a href="/events/event/<%= ev.slug %>" class="event-btn">Join Event</a>
             </div>
           </div>
@@ -120,7 +127,17 @@
   <%- include('../partials/footer') %>
 
   <script>
-    // FILTER LOGIC
+    // 🔍 Text search (title-based)
+    const searchInput = document.getElementById("event-search");
+    searchInput?.addEventListener("input", () => {
+      const term = searchInput.value.toLowerCase();
+      document.querySelectorAll(".event-card").forEach(card => {
+        const title = card.querySelector(".event-title").innerText.toLowerCase();
+        card.style.display = title.includes(term) ? "flex" : "none";
+      });
+    });
+
+    // FILTER LOGIC (same as before)
     const filters = {
       category: document.getElementById("filter-category"),
       location: document.getElementById("filter-location"),
@@ -137,11 +154,15 @@
       const cards = document.querySelectorAll(".event-card");
 
       cards.forEach(card => {
-        const matchCategory = category === "all" || card.dataset.category === category;
-        const matchLocation = location === "all" || card.dataset.location.includes(location);
+        const matchCategory =
+          category === "all" || card.dataset.category === category;
+
+        const matchLocation =
+          location === "all" || card.dataset.location.includes(location);
 
         let matchDate = true;
         const eventDate = new Date(card.dataset.date);
+
         if (date === "today") {
           matchDate = eventDate.toDateString() === today.toDateString();
         } else if (date === "week") {
@@ -152,19 +173,24 @@
           matchDate = eventDate.getMonth() === today.getMonth();
         }
 
-        card.style.display = matchCategory && matchLocation && matchDate ? "flex" : "none";
+        card.style.display =
+          matchCategory && matchLocation && matchDate ? "flex" : "none";
       });
     }
 
     Object.values(filters).forEach(el => {
-      if (el.tagName === "SELECT") el.addEventListener("change", applyFilters);
+      if (el && el.tagName === "SELECT") {
+        el.addEventListener("change", applyFilters);
+      }
     });
 
-    filters.clear.addEventListener("click", () => {
+    filters.clear?.addEventListener("click", () => {
       Object.values(filters).forEach(el => {
-        if (el.tagName === "SELECT") el.value = "all";
+        if (el && el.tagName === "SELECT") el.value = "all";
       });
-      document.querySelectorAll(".event-card").forEach(card => (card.style.display = "flex"));
+      document
+        .querySelectorAll(".event-card")
+        .forEach(card => (card.style.display = "flex"));
     });
   </script>
 </body>

@@ -1,65 +1,50 @@
+// src/utils/upload.js
+import dotenv from "dotenv";
 import multer from "multer";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 
-// Setup base path
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const uploadDir = path.join(__dirname, "../../public/uploads");
+// ✅ Load .env here so env vars are ready BEFORE cloudinary.config
+dotenv.config();
 
-// ✅ Ensure uploads folder exists
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-  console.log("📁 Created uploads folder:", uploadDir);
-}
+// ✅ Cloudinary config (values come from .env)
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-// ✅ Multer Storage Config
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname);
-    const baseName = path.basename(file.originalname, ext);
-    const safeName = baseName.replace(/\s+/g, "-").toLowerCase();
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, `${safeName}-${uniqueSuffix}${ext}`);
+// (Optional) Quick debug — remove after it works
+console.log("Cloudinary init:", {
+  name: process.env.CLOUDINARY_CLOUD_NAME,
+  key:  process.env.CLOUDINARY_API_KEY ? "OK" : "MISSING",
+  sec:  process.env.CLOUDINARY_API_SECRET ? "OK" : "MISSING",
+});
+
+// ✅ Cloudinary Storage for Multer
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    return {
+      folder: "utsava-events",          // folder in Cloudinary
+      resource_type: "image",
+      allowed_formats: ["jpg", "jpeg", "png", "webp"],
+      transformation: [
+        {
+          width: 1280,
+          height: 720,
+          crop: "fill",
+          gravity: "auto",
+        },
+      ],
+    };
   },
 });
 
-// ✅ File Filter (supports Safari/HEIC/PNG/JPG/WEBP)
-const fileFilter = (req, file, cb) => {
-  const allowed = [
-    "image/jpeg",
-    "image/png",
-    "image/jpg",
-    "image/heic",
-    "image/heif",
-    "image/webp",
-  ];
-
-  if (!allowed.includes(file.mimetype)) {
-    console.warn("⚠️ File rejected (type):", file.mimetype);
-    req.fileValidationError =
-      "Only image files (JPEG, PNG, WEBP, or HEIC) are allowed.";
-    return cb(null, false);
-  }
-
-  cb(null, true);
-};
-
-// ✅ Initialize Multer with larger limit + safer error handling
+// ✅ Multer instance (10 MB limit)
 export const upload = multer({
   storage,
-  fileFilter,
   limits: {
-    fileSize: 10 * 1024 * 1024, // 🔼 increased to 10 MB max
+    fileSize: 10 * 1024 * 1024, // 10 MB
   },
 });
-
-// ✅ Debug helper (optional)
-export const checkUploadMiddleware = (req, res, next) => {
-  console.log("🧩 Upload Debug - Content-Type:", req.headers["content-type"]);
-  next();
-};

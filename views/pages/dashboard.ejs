@@ -57,7 +57,7 @@
                 <div class="timeline-card">
                   <div class="card-top">
                     <div class="time"><%= ev.time || '' %></div>
-                    <div class="thumb" data-bg="<%= thumbUrl %>"></div>
+                    <div class="thumb" data-bg="<%= ev.image || 'https://res.cloudinary.com/demo/image/upload/v17222/default-event.jpg' %>"></div>
                   </div>
 
                   <div class="card-body">
@@ -121,7 +121,7 @@
                 <div class="past-body">
                   <div class="pb-top">
                     <h3><%= ev.title %></h3>
-                    <div class="pb-thumb" data-bg="<%= pbThumb %>"></div>
+                    <div class="pb-thumb" data-bg="<%= ev.image || 'https://res.cloudinary.com/demo/image/upload/v17222/default-event.jpg' %>"></div>
                   </div>
                   <div class="pb-meta">
                     <span><i class="icon">📍</i> <%= ev.location || 'Online' %></span>

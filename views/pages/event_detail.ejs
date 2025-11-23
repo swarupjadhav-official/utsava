@@ -19,13 +19,17 @@
     <section class="event-header">
       <!-- LEFT SIDE -->
       <div class="event-left">
-        <img src="<%= event.image || '/uploads/default-event.jpg' %>" alt="<%= event.title %>" class="event-banner" />
+        <img
+          src="<%= event.image || '/uploads/default-event.jpg' %>"
+          alt="<%= event.title %>"
+          class="event-banner"
+        />
 
         <!-- ✅ Hosted By (Dynamic) -->
         <div class="hosted-box">
           <h3>Hosted By</h3>
           <div class="host-info">
-            <img src="/uploads/utsava-logo.png" alt="Host Logo" />
+            <img src="<%= UTSAVA_LOGO_URL %>" alt="Host Logo" /> alt="Host Logo" />
             <div>
               <h4><%= event.hostedBy || "Utsava Events" %></h4>
               <p>Empowering Organisers • Connecting Attendees</p>
@@ -44,11 +48,24 @@
             <i class="fa-regular fa-calendar"></i>
             <div>
               <strong>
-                <%= new Date(event.startDate).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }) %>
+                <%= new Date(event.startDate).toLocaleDateString('en-GB', {
+                     weekday: 'long',
+                     day: 'numeric',
+                     month: 'long'
+                   }) %>
               </strong><br>
               <span>
-                <%= new Date(event.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %> –
-                <%= event.endDate ? new Date(event.endDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'End time TBD' %>
+                <%= new Date(event.startDate).toLocaleTimeString([], {
+                     hour: '2-digit',
+                     minute: '2-digit'
+                   }) %>
+                 –
+                <%= event.endDate
+                     ? new Date(event.endDate).toLocaleTimeString([], {
+                         hour: '2-digit',
+                         minute: '2-digit'
+                       })
+                     : 'End time TBD' %>
               </span>
             </div>
           </div>
@@ -71,7 +88,12 @@
           <% } else { %>
             <h3>Registration</h3>
             <p>Welcome! To join the event, please register below.</p>
-            <form action="/events/<%= event._id %>/register" method="POST" class="register-form">
+
+            <form
+              action="/events/<%= event._id %>/register"
+              method="POST"
+              class="register-form"
+            >
               <% if (!user) { %>
                 <input type="text" name="name" placeholder="Your Name" required />
                 <input type="email" name="email" placeholder="Your Email" required />
@@ -81,6 +103,7 @@
                   <span><%= user.name %> (<%= user.email %>)</span>
                 </div>
               <% } %>
+
               <button type="submit" class="btn register-btn">Register</button>
             </form>
           <% } %>
@@ -89,7 +112,7 @@
         <!-- About Event -->
         <div class="about-section">
           <h3>About Event</h3>
-         <p class="event-description-text"><%= event.description %></p>
+          <p class="event-description-text"><%= event.description %></p>
         </div>
       </div>
     </section>
